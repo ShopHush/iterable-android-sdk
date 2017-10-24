@@ -137,6 +137,10 @@ public class IterableApi {
         
         return _notificationData.getTemplateId();
     }
+    
+    public void clearIterableNotificationData() {
+        _notificationData = null;
+    }
 
 //---------------------------------------------------------------------------------------
 //endregion
