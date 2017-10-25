@@ -1,6 +1,7 @@
 package com.iterable.iterableapi;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -169,6 +171,9 @@ public class IterableNotification extends NotificationCompat.Builder {
 
         notificationBuilder.setDefaults(notifPermissions.defaults);
 
+        //Added by Hush for Oreo PN support
+        notificationBuilder.setChannelId("main_channel");
+
         return notificationBuilder;
     }
 
@@ -183,6 +188,21 @@ public class IterableNotification extends NotificationCompat.Builder {
         if (!iterableNotification.isGhostPush) {
             NotificationManager mNotificationManager = (NotificationManager)
                     context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            //region Hush Push Notification Channel haxx for Oreo Support
+            if (Build.VERSION.SDK_INT >= 26) {
+                String id = "main_channel";
+                CharSequence userFriendlyName = "Push Notifications Channel";
+                int importance = NotificationManager.IMPORTANCE_HIGH;
+                NotificationChannel channel = new NotificationChannel(id, userFriendlyName,
+                        importance);
+                channel.enableLights(true);
+                channel.enableVibration(true);
+                channel.setDescription("App Notifications");
+                mNotificationManager.createNotificationChannel(channel);
+            }
+            //endRegion
+
             mNotificationManager.notify(iterableNotification.requestCode, iterableNotification.build());
         }
     }
