@@ -246,3 +246,6 @@ Temporary Items
 # End of https://www.gitignore.io/api/osx,android,intellij,androidstudio
 
 *.iml
+iterableapi/iterableapi.iml
+app/app.iml
+
